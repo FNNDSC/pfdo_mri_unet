@@ -181,7 +181,6 @@ class pfdo_mri_unet(pfdo.pfdo):
 
         for str_file in l_fileToAnalyze_determine(l_fileProbed):
             mri_unet_args['inputDir']      = str_path
-            mri_unet_args['inputFile']     = str_file
             mri_unet_args['outputDir']     = str_path.replace(
                                                 self.args['inputDir'], 
                                                 self.args['outputDir']
@@ -190,11 +189,10 @@ class pfdo_mri_unet(pfdo.pfdo):
             mri_unet_args['outputDir'] = os.path.join(mri_unet_args['outputDir'], str_file)
             os.mkdir(mri_unet_args['outputDir'])
 
-            mri_unet_args['saveImages']    = self.args['saveImages']  
-            mri_unet_args['skipAllLabels'] = self.args['skipAllLabels']  
+           
 
-            mri_unet_ns    = Namespace(**mgz2image_args)
-            unet    = mri_unet.object_factoryCreate(mgz2image_ns).C_convert
+            mri_unet_ns    = Namespace(**mri_unet_args)
+            unet    = mri_unet.object_factoryCreate(mri_unet_ns).C_convert
 
             # At time of dev, the `unet.run()` does not return anything.
             unet.run()
@@ -262,7 +260,7 @@ class pfdo_mri_unet(pfdo.pfdo):
         as any (overloaded) file filtering.
         """
 
-        #pudb.set_trace()
+        # pudb.set_trace()
         b_status        : bool  = False
         b_timerStart    : bool  = False
         d_pfdo          : dict  = {}
